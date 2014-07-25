@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package de.larsgrefer.cli.annotations;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
@@ -14,7 +10,12 @@ import java.lang.annotation.Target;
  * @author lgrefer
  */
 @Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface CliOption {
-	String name();
-	String longName();
+	char name() default DEFAULT_NAME;
+	String longName() default DEFAULT_LONG_NAME;
+	boolean required() default false;
+	
+	public static char DEFAULT_NAME = '\0';
+	public static String DEFAULT_LONG_NAME = "#default";
 }

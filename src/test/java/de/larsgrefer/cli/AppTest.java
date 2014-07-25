@@ -1,5 +1,10 @@
 package de.larsgrefer.cli;
 
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -10,6 +15,8 @@ import junit.framework.TestSuite;
 public class AppTest 
     extends TestCase
 {
+	public Set<Long> testSet;
+	
     /**
      * Create the test case
      *
@@ -31,8 +38,12 @@ public class AppTest
     /**
      * Rigourous Test :-)
      */
-    public void testApp()
+    public void testApp() throws Exception
     {
-        assertTrue( true );
+        assertTrue( List.class.isAssignableFrom(ArrayList.class) );
+		ParameterizedType pt =  (ParameterizedType) this.getClass().getField("testSet").getGenericType();
+		assertTrue(pt.getActualTypeArguments()[0].equals(Long.class));
+			
+				
     }
 }
