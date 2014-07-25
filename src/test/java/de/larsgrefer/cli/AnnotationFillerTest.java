@@ -24,7 +24,6 @@
 
 package de.larsgrefer.cli;
 
-import de.larsgrefer.cli.annotations.CliArgumentParser;
 import com.google.common.base.Objects;
 import de.larsgrefer.cli.annotations.CliOption;
 import de.larsgrefer.cli.exceptions.DuplicateOptionException;

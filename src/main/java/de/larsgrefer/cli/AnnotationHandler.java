@@ -105,8 +105,10 @@ public class AnnotationHandler {
 				option = argsHandler.optionsByLongName.get(on.longName);
 			}
 			Object value = option.getValue();
-			if(value != null)
+			if (value != null) {
+				field.setAccessible(true);
 				field.set(obj, value);
+			}
 		}
 	}
 
@@ -180,15 +182,15 @@ public class AnnotationHandler {
 		if (type.equals(Byte.class) || type.equals(byte.class)) {
 			return new ByteParser();
 		}
-		
+
 		if (type.equals(Short.class) || type.equals(short.class)) {
 			return new IntParser();
 		}
-		
+
 		if (type.equals(Integer.class) || type.equals(int.class)) {
 			return new IntParser();
 		}
-		
+
 		if (type.equals(Long.class) || type.equals(long.class)) {
 			return new IntParser();
 		}
@@ -196,7 +198,7 @@ public class AnnotationHandler {
 		if (type.equals(Character.class) || type.equals(char.class)) {
 			return new CharParser();
 		}
-		
+
 		return null;
 	}
 
