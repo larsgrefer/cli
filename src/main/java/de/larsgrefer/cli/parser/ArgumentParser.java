@@ -24,15 +24,26 @@
 
 package de.larsgrefer.cli.parser;
 
-/**
- *
- * @author lgrefer
- */
-public class LongParser implements ArgumentParser<Long> {
+import java.util.function.Function;
 
+/**
+ * Super interface for all classes which parse command line arguments (given as String) to a java type
+ * <p>
+ * You only need to override the parse() method
+ * <p>
+ * May be implemented as Lambda Expression
+ * 
+ * @author Lars Grefer
+ * @param <T> The return type of the parse Method
+ */
+@FunctionalInterface
+public interface ArgumentParser<T> extends Function<String, T>{
+	
 	@Override
-	public Long parse(String arg) {
-		return Long.decode(arg);
+	public default T apply(String t) {
+		return parse(t);
 	}
 
+	public T parse(String arg);
+	
 }

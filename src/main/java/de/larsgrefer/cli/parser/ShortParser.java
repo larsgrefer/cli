@@ -1,10 +1,7 @@
-
-import de.larsgrefer.cli.parser.ICliParser;
-
 /*
  * The MIT License
  *
- * Copyright 2014 lgrefer.
+ * Copyright 2014 Lars Grefer.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +22,13 @@ import de.larsgrefer.cli.parser.ICliParser;
  * THE SOFTWARE.
  */
 
+package de.larsgrefer.cli.parser;
+
 /**
  *
  * @author lgrefer
  */
-public class ShortParser implements ICliParser<Short>{
+public class ShortParser implements ArgumentParser<Short>{
 
 	@Override
 	public Short parse(String arg) {

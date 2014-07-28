@@ -24,8 +24,6 @@
 
 package de.larsgrefer.cli.exceptions;
 
-import de.larsgrefer.cli.model.Option;
-
 /**
  *
  * @author lgrefer

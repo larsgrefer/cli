@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 lgrefer.
+ * Copyright 2014 Lars Grefer.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package de.larsgrefer.cli.parser;
 
 /**
@@ -28,9 +29,9 @@ package de.larsgrefer.cli.parser;
  *
  * Just maps the identity arg -> arg
  *
- * @author lgrefer
+ * @author Lars Grefer
  */
-public class StringParser implements ICliParser<String> {
+public class StringParser implements ArgumentParser<String> {
 
 	@Override
 	public String parse(String arg) {

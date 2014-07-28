@@ -24,15 +24,19 @@
 
 package de.larsgrefer.cli.parser;
 
+import java.io.File;
+
 /**
- *
+ * Parser for command line arguments which are representing a Filename
+ * 
+ * @see File#File(java.lang.String) 
  * @author lgrefer
  */
-public class LongParser implements ArgumentParser<Long> {
+public class FileParser implements ArgumentParser<File>{
 
 	@Override
-	public Long parse(String arg) {
-		return Long.decode(arg);
+	public File parse(String arg) {
+		return new File(arg);
 	}
-
+	
 }

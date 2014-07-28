@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 lgrefer.
+ * Copyright 2014 Lars Grefer.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,26 +28,28 @@ import com.google.common.base.Objects;
 
 /**
  *
- * @author lgrefer
+ * base class for all command line options
+ * 
+ * @author Lars Grefer
  * @param <T>
  */
-public abstract class Option<T> {
+public abstract class CommandLineOption<T> implements Comparable<CommandLineOption<T>>{
 
-	public Option() {
+	public CommandLineOption() {
+		description = "";
 	}
 
-	public Option(char name, String longName, boolean required) {
+	public CommandLineOption(char name, String longName, boolean required, String description) {
 		this.name = name;
 		this.longName = longName;
 		this.required = required;
+		this.description = description;
 	}
 	
 	private char name;
-	
 	private String longName;
-	
 	private boolean required;
-
+	private String description;
 	private boolean set;
 	
 	public char getName() {
@@ -68,6 +70,10 @@ public abstract class Option<T> {
 	
 	public abstract T getValue();
 
+	public String getDescription() {
+		return description;
+	}
+	
 	public void setName(char name) {
 		this.name = name;
 	}
@@ -83,6 +89,20 @@ public abstract class Option<T> {
 	public void setSet(boolean set) {
 		this.set = set;
 	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public boolean hasName()
+	{
+		return name != '\0';
+	}
+	
+	public boolean hasLongName()
+	{
+		return longName != null && !longName.isEmpty();
+	}
 	
 	protected Objects.ToStringHelper getToStringHelper()
 	{
@@ -95,8 +115,15 @@ public abstract class Option<T> {
 
 	@Override
 	public String toString() {
-		return getToStringHelper().omitNullValues().toString();
+		return getToStringHelper().toString();
 	}
-	
-	
+
+	@Override
+	public int compareTo(CommandLineOption<T> other) {
+		if(this.name != '\0' && other.name != '\0')
+			return Character.toString(name).compareTo(Character.toString(other.name));
+		else if(this.longName != null && !this.longName.isEmpty() && other.longName != null && !other.longName.isEmpty())
+			return this.longName.compareToIgnoreCase(other.longName);
+		return 0;
+	}
 }

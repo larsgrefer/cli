@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 lgrefer.
+ * Copyright 2014 Lars Grefer.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,45 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package de.larsgrefer.cli.model;
 
 import com.google.common.base.Objects;
-import java.util.function.Function;
+import de.larsgrefer.cli.parser.ArgumentParser;
 
 /**
  *
- * @author lgrefer
+ * @author Lars Grefer
  * @param <I>
  * @param <O>
  */
-public abstract class ArgumentedOption<I,O> extends Option<O> {
+public abstract class ArgumentedOption<I,O> extends CommandLineOption<O> {
 
-	O value;
+	protected O value;
 
-	Function<String, I> parser;
+	ArgumentParser<I> parser;
 
 	public ArgumentedOption() {
 	}
 
-	public ArgumentedOption( char name, String longName, boolean required, Function<String, I> parser) {
-		super(name, longName, required);
+	public ArgumentedOption( char name, String longName, boolean required, String description, ArgumentParser<I> parser) {
+		super(name, longName, required, description);
 		this.parser = parser;
 	}
 	
 	@Override
 	public O getValue() {
-		return value;
+		return isSet() ? value : null;
 	}
 
 	public void setValue(O newValue) {
 		this.value = newValue;
 	}
 
-	public Function<String, I> getParser() {
+	public ArgumentParser<I> getParser() {
 		return parser;
 	}
 
-	public void setParser(Function<String, I> parser) {
+	public void setParser(ArgumentParser<I> parser) {
 		this.parser = parser;
 	}
 

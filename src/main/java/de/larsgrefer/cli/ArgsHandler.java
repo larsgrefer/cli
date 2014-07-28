@@ -26,7 +26,7 @@ package de.larsgrefer.cli;
 import de.larsgrefer.cli.exceptions.DuplicateOptionException;
 import de.larsgrefer.cli.exceptions.NoArgumentAllowedException;
 import de.larsgrefer.cli.model.ArgumentedOption;
-import de.larsgrefer.cli.model.Option;
+import de.larsgrefer.cli.model.CommandLineOption;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
@@ -38,17 +38,17 @@ import java.util.stream.IntStream;
  * @author lgrefer
  * @param <T>
  */
-public class ArgsHandler<T extends Collection<? extends Option>> {
+public class ArgsHandler<T extends Collection<? extends CommandLineOption>> {
 
-	T options;
-	Map<Character, Option> optionsByName;
-	Map<String, Option> optionsByLongName;
+	private T options;
+	private final Map<Character, CommandLineOption> optionsByName;
+	private final Map<String, CommandLineOption> optionsByLongName;
 
 	public ArgsHandler(T options) throws DuplicateOptionException {
 		optionsByName = new TreeMap<>();
 		optionsByLongName = new TreeMap<>();
 
-		for (Option opt : options) {
+		for (CommandLineOption opt : options) {
 			if (optionsByName.containsKey(opt.getName())) {
 				throwNewDuplicateByNameException(opt);
 			}
@@ -84,20 +84,20 @@ public class ArgsHandler<T extends Collection<? extends Option>> {
 			}
 		}
 
-		return options;
+		return getOptions();
 
 	}
 
-	private void throwNewDuplicateByNameException(Option opt) throws DuplicateOptionException {
-		String dop = options.stream()
+	private void throwNewDuplicateByNameException(CommandLineOption opt) throws DuplicateOptionException {
+		String dop = getOptions().stream()
 				.filter(option -> option.getName() == opt.getName())
 				.map(option -> option.toString())
 				.collect(Collectors.joining("\n"));
 		throw new DuplicateOptionException("The following Options have duplicate Names:\n" + dop);
 	}
 
-	private void throwNewDuplicateByLongNameException(Option opt) throws DuplicateOptionException {
-		String dop = options.stream()
+	private void throwNewDuplicateByLongNameException(CommandLineOption opt) throws DuplicateOptionException {
+		String dop = getOptions().stream()
 				.filter(option -> option.getLongName().equals(opt.getLongName()))
 				.map(option -> option.toString())
 				.collect(Collectors.joining("\n"));
@@ -105,21 +105,21 @@ public class ArgsHandler<T extends Collection<? extends Option>> {
 	}
 
 	private void fillLongNamedOption(int argIndex, int nextArgIndex) throws NoArgumentAllowedException {
-		Option option = optionsByLongName.get(args[argIndex].substring(2));
+		CommandLineOption option = getOptionsByLongName().get(args[argIndex].substring(2));
 		fillOption(option, argIndex, nextArgIndex);
 	}
 
 	private void fillShortNamedOption(int argIndex, int nextArgIndex) throws NoArgumentAllowedException {
 		char[] optionChars = args[argIndex].substring(1).toCharArray();
 		for (int i = 0; i < optionChars.length - 1; i++) {
-			Option option = optionsByName.get(optionChars[i]);
+			CommandLineOption option = getOptionsByName().get(optionChars[i]);
 			fillOption(option, argIndex, argIndex);
 		}
-		Option option = optionsByName.get(optionChars[optionChars.length - 1]);
+		CommandLineOption option = getOptionsByName().get(optionChars[optionChars.length - 1]);
 		fillOption(option, argIndex, nextArgIndex);
 	}
 
-	private void fillOption(Option option, int argIndex, int nextArgIndex) throws NoArgumentAllowedException {
+	private void fillOption(CommandLineOption option, int argIndex, int nextArgIndex) throws NoArgumentAllowedException {
 		if (option == null) {
 			return;
 		}
@@ -133,5 +133,25 @@ public class ArgsHandler<T extends Collection<? extends Option>> {
 				throw new NoArgumentAllowedException("No arguments allowed for Option " + args[argIndex]);
 			}
 		}
+	}
+
+	public T getOptions() {
+		return options;
+	}
+
+	public Map<Character, CommandLineOption> getOptionsByName() {
+		return optionsByName;
+	}
+
+	public CommandLineOption getOptionByName(char name) {
+		return getOptionsByName().get(name);
+	}
+
+	public Map<String, CommandLineOption> getOptionsByLongName() {
+		return optionsByLongName;
+	}
+	
+	public CommandLineOption getOptionByLongName(String name) {
+		return getOptionsByLongName().get(name);
 	}
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 lgrefer.
+ * Copyright 2014 Lars Grefer.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,11 +24,11 @@
 
 package de.larsgrefer.cli.model;
 
-import java.util.function.Function;
+import de.larsgrefer.cli.parser.ArgumentParser;
 
 /**
  *
- * @author lgrefer
+ * @author Lars Grefer
  * @param <T>
  */
 public class SimpleArgumentedOption<T> extends ArgumentedOption<T, T>{
@@ -36,13 +36,12 @@ public class SimpleArgumentedOption<T> extends ArgumentedOption<T, T>{
 	public SimpleArgumentedOption() {
 	}
 	
-	public SimpleArgumentedOption( char name, String longName, boolean required, Function<String, T> parser) {
-		super(name, longName, required, parser);
+	public SimpleArgumentedOption( char name, String longName, boolean required, String description, ArgumentParser<T> parser) {
+		super(name, longName, required, description, parser);
 	}
 	
 	@Override
 	public void addValue(String valueString) {
-		value = getParser().apply(valueString);
+		value = getParser().parse(valueString);
 	}
-	
 }

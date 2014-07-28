@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 lgrefer.
+ * Copyright 2014 Lars Grefer.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 package de.larsgrefer.cli.annotations;
 
-import de.larsgrefer.cli.parser.ICliParser;
+import de.larsgrefer.cli.parser.ArgumentParser;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -37,5 +37,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CliArgumentParser {
-	Class<? extends ICliParser<?>> value();
+	Class<? extends ArgumentParser<?>> value();
 }

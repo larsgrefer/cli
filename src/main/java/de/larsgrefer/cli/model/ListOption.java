@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 lgrefer.
+ * Copyright 2014 Lars Grefer.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,27 +24,53 @@
 
 package de.larsgrefer.cli.model;
 
+import com.google.common.base.Objects;
+import de.larsgrefer.cli.parser.ArgumentParser;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  *
- * @author lgrefer
+ * @author Lars Grefer
+ * @param <T>
  */
 public class ListOption<T> extends ArgumentedOption<T,List<T>> {
 
+	Supplier<List<T>> newListSupplier;
+	
 	public ListOption() {
+		this.newListSupplier = () -> new ArrayList<>();
 	}
 	
-	public ListOption( char name, String longName, boolean required, Function<String, T> parser) {
-		super(name, longName, required, parser);
+	public ListOption( char name, String longName, boolean required, String description, ArgumentParser<T> parser) {
+		super(name, longName, required, description, parser);
+		this.newListSupplier = () -> new ArrayList<>();
+	}
+
+	public ListOption( char name, String longName, boolean required, String description, ArgumentParser<T> parser, Supplier<List<T>> newListSupplier) {
+		super(name, longName, required, description, parser);
+		this.newListSupplier = newListSupplier;
+	}
+
+	public Supplier<List<T>> getListSupplier() {
+		return newListSupplier;
+	}
+
+	public void setListSupplier(Supplier<List<T>> listSupplier) {
+		this.newListSupplier = listSupplier;
 	}
 
 	@Override
 	public void addValue(String valueString) {
-		if(getValue() == null)
-			setValue(new ArrayList<>());
-		getValue().add(parser.apply(valueString));
+		if(value == null)
+			value = newListSupplier.get();
+		value.add(parser.parse(valueString));
+	}
+
+	@Override
+	protected Objects.ToStringHelper getToStringHelper() {
+		return super.getToStringHelper()
+				.add("newListSupplier", newListSupplier);
 	}
 }

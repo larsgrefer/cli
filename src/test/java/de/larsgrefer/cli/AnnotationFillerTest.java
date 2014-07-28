@@ -28,7 +28,8 @@ import com.google.common.base.Objects;
 import de.larsgrefer.cli.annotations.CliOption;
 import de.larsgrefer.cli.exceptions.DuplicateOptionException;
 import de.larsgrefer.cli.exceptions.NoArgumentAllowedException;
-import de.larsgrefer.cli.model.Option;
+import de.larsgrefer.cli.model.CommandLineOption;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -49,8 +50,8 @@ public class AnnotationFillerTest {
 	public void test() throws DuplicateOptionException, NoArgumentAllowedException
 	{
 		TestClass tc = new TestClass();
-		
-		List<Option> opts = AnnotationHandler.getOptions(tc).collect(Collectors.toList());
+		AnnotationHandler anh = new AnnotationHandler();
+		List<CommandLineOption> opts = anh.getOptions(tc).collect(Collectors.toList());
 		
 		opts.forEach(System.out::println);
 		
@@ -58,7 +59,7 @@ public class AnnotationFillerTest {
 		assertTrue(opts.stream().anyMatch(o -> o.getName() == 'b'));
 		assertTrue(opts.stream().anyMatch(o -> o.getName() == 'c'));
 		
-		ArgsHandler<List<Option>> ah = new ArgsHandler(opts);
+		ArgsHandler<List<CommandLineOption>> ah = new ArgsHandler(opts);
 		
 		ah.fillOptionWithArgs(new String[] { "-ac", "-b", "50", "--hallo", "x", "y", "z"});
 		
@@ -69,7 +70,9 @@ public class AnnotationFillerTest {
 	public void test2() throws DuplicateOptionException, NoArgumentAllowedException, IllegalArgumentException, IllegalAccessException
 	{
 		TestClass tc = new TestClass();
-		AnnotationHandler.fillOptions(tc, new String[] { "-ac", "-b", "50", "--hallo", "x", "y", "z"});
+		AnnotationHandler ah = new AnnotationHandler();
+		ah.registerParser(File.class, ff -> new File(ff));
+		ah.fillOptions(tc, new String[] { "-ac", "-b", "50", "--hallo", "x", "y", "z"});
 		
 		System.out.println(tc);
 	}

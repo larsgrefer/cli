@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 lgrefer.
+ * Copyright 2014 Lars Grefer.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,21 +24,25 @@
 
 package de.larsgrefer.cli.parser;
 
-import java.util.function.Function;
+import java.net.MalformedURLException;
+import java.net.URL;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
  * @author lgrefer
- * @param <T>
  */
-@FunctionalInterface
-public interface ICliParser<T> extends Function<String, T>{
+public class UrlParser implements ArgumentParser<URL>{
 
 	@Override
-	public default T apply(String t) {
-		return parse(t);
+	public URL parse(String arg) {
+		LogManager.getLogger(this)
+				.entry(arg);
+		try {
+			return new URL(arg);
+		} catch (MalformedURLException ex) {
+			throw  new IllegalArgumentException( arg + " seems to be an invalid URL", ex);
+		}
 	}
-
-	public T parse(String arg);
 	
 }

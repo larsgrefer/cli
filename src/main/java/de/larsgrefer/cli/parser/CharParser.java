@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 lgrefer.
+ * Copyright 2014 Lars Grefer.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,14 @@
 package de.larsgrefer.cli.parser;
 
 /**
- *
+ * Parser for command line arguments which are representing a Character
+ * 
+ * Uses {@link String#charAt(0)}
+ * 
+ * @see String#charAt(int) 
  * @author lgrefer
  */
-public class CharParser implements ICliParser<Character>{
+public class CharParser implements ArgumentParser<Character>{
 
 	@Override
 	public Character parse(String arg) {

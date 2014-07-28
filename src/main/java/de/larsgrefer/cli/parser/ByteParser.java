@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 lgrefer.
+ * Copyright 2014 Lars Grefer.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,12 @@
 package de.larsgrefer.cli.parser;
 
 /**
- *
- * @author lgrefer
+ * Parser for command line arguments representing a byte
+ * 
+ * @see Byte#decode(java.lang.String) 
+ * @author Lars Grefer
  */
-public class ByteParser implements ICliParser<Byte>{
+public class ByteParser implements ArgumentParser<Byte>{
 
 	@Override
 	public Byte parse(String arg) {
