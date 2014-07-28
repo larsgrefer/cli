@@ -4,6 +4,30 @@ cli
 Command Line Interface for Java 8
 
 ## Usage
+
+### Command Line Syntax
+
+Options can have a short name (one char) and a long name.  
+Muliple short names can collapse into one declaration
+In the collapsed form only the last option can take arguments
+
+```bash
+-f
+--foo
+
+-f --bar
+-f -b
+-fb
+
+--names n1 n2 n3
+-n n1 n2 n3
+
+-n n1 n2 n3 -fb
+-fbn n1 n2 n3
+
+--map key1=value1 key2=value2
+```
+
 ### Annotations
 
 ```java
