@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package de.larsgrefer.cli;
 
 import com.google.common.base.Objects;
@@ -29,10 +28,7 @@ import de.larsgrefer.cli.annotations.CliOption;
 import de.larsgrefer.cli.exceptions.DuplicateOptionException;
 import de.larsgrefer.cli.exceptions.NoArgumentAllowedException;
 import de.larsgrefer.cli.model.CommandLineOption;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -42,68 +38,68 @@ import org.junit.Test;
  * @author lgrefer
  */
 public class AnnotationFillerTest {
-	
+
 	public AnnotationFillerTest() {
 	}
 
 	@Test
-	public void test() throws DuplicateOptionException, NoArgumentAllowedException
-	{
+	public void test() throws DuplicateOptionException, NoArgumentAllowedException {
 		TestClass tc = new TestClass();
 		AnnotationHandler anh = new AnnotationHandler();
 		List<CommandLineOption> opts = anh.getOptions(tc).collect(Collectors.toList());
-		
+
 		opts.forEach(System.out::println);
-		
+
 		assertTrue(opts.stream().anyMatch(o -> o.getName() == 'a'));
 		assertTrue(opts.stream().anyMatch(o -> o.getName() == 'b'));
 		assertTrue(opts.stream().anyMatch(o -> o.getName() == 'c'));
-		
+
 		ArgsHandler<List<CommandLineOption>> ah = new ArgsHandler(opts);
-		
-		ah.fillOptionWithArgs(new String[] { "-ac", "-b", "50", "--hallo", "x", "y", "z"});
-		
+
+		ah.fillOptionWithArgs(new String[]{"-ac", "-b", "50", "--hallo", "x", "y", "z"});
+
 		opts.forEach(System.out::println);
 	}
-	
+
 	@Test
-	public void test2() throws DuplicateOptionException, NoArgumentAllowedException, IllegalArgumentException, IllegalAccessException
-	{
+	public void test2() throws DuplicateOptionException, NoArgumentAllowedException, IllegalArgumentException, IllegalAccessException {
 		TestClass tc = new TestClass();
 		AnnotationHandler ah = new AnnotationHandler();
-		ah.registerParser(File.class, ff -> new File(ff));
-		ah.fillOptions(tc, new String[] { "-ac", "-b", "50", "--hallo", "x", "y", "z"});
-		
-		System.out.println(tc);
-	}
-	
-	public static class CharParser implements Function<String, Character>
-	{
+		ah.fillOptions(tc, new String[]{"-ac", "-b", "50", "--hallo", "x", "y", "z", "-e", "foo", "bar"});
 
-		@Override
-		public Character apply(String t) {
-			return t.charAt(0);
-		}
-		
+		System.out.println(tc);
+
+		assertEquals("foo", tc.etest.get(0));
+		assertEquals("bar", tc.etest.get(1));
 	}
-	
-	public class TestClass
-	{
+
+	@Test
+	public void test3() {
+		try {
+			AnnotationHandler ah = new AnnotationHandler();
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	public class TestClass {
+
 		@CliOption(name = 'a')
 		public boolean atest;
-		
+
 		@CliOption(name = 'b')
 		public int btest;
-		
+
 		@CliOption(name = 'c')
 		boolean ctest;
-		
+
 		@CliOption(name = 'd')
 		char dtest;
-		
+
 		@CliOption(name = 'e')
-		ArrayList<String> etest;
-		
+		List<String> etest;
+
 		@CliOption(name = 'f', longName = "hallo")
 		List<Character> ftest;
 
@@ -118,7 +114,6 @@ public class AnnotationFillerTest {
 					.add("ftest", ftest)
 					.toString();
 		}
-		
-		
+
 	}
 }

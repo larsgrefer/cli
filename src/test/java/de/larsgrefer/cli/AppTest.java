@@ -35,15 +35,10 @@ public class AppTest
         return new TestSuite( AppTest.class );
     }
 
-    /**
-     * Rigourous Test :-)
-     */
     public void testApp() throws Exception
     {
         assertTrue( List.class.isAssignableFrom(ArrayList.class) );
 		ParameterizedType pt =  (ParameterizedType) this.getClass().getField("testSet").getGenericType();
 		assertTrue(pt.getActualTypeArguments()[0].equals(Long.class));
-			
-				
     }
 }

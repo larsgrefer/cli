@@ -33,7 +33,15 @@ import de.larsgrefer.cli.model.CommandLineOption;
 import de.larsgrefer.cli.model.ListOption;
 import de.larsgrefer.cli.model.SimpleArgumentedOption;
 import de.larsgrefer.cli.model.SimpleOption;
-import de.larsgrefer.cli.parser.*;
+import de.larsgrefer.cli.parser.ArgumentParser;
+import de.larsgrefer.cli.parser.ByteParser;
+import de.larsgrefer.cli.parser.CharParser;
+import de.larsgrefer.cli.parser.FileParser;
+import de.larsgrefer.cli.parser.IntParser;
+import de.larsgrefer.cli.parser.LongParser;
+import de.larsgrefer.cli.parser.ShortParser;
+import de.larsgrefer.cli.parser.StringParser;
+import de.larsgrefer.cli.parser.UrlParser;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -64,8 +72,8 @@ public class AnnotationHandler {
 	}
 
 	public AnnotationHandler(Map<Type, ArgumentParser<?>> parserDatabase) {
-		this.parserDatabase = parserDatabase;
 		log = LogManager.getLogger(AnnotationHandler.class);
+		this.parserDatabase = parserDatabase;
 	}
 
 	//<editor-fold defaultstate="collapsed" desc="Getter and Setter">
